@@ -1,0 +1,182 @@
+[
+  {
+    "name": "Happy Paws Petshop",
+    "description": "Wide variety of pet supplies and food.",
+    "services": ["petshop"],
+    "location": {
+      "lat": 4.711,
+      "lng": -74.0721,
+      "address": "Carrera 10 #15-30, Bogotá"
+    },
+    "contactNumber": "+57 3001234567",
+    "socialMedia": {
+      "facebook": "https://facebook.com/happypaws",
+      "instagram": "https://instagram.com/happypaws.co",
+      "website": "https://happypaws.co"
+    },
+    "images": [
+      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"
+    ]
+  },
+  {
+    "name": "VetLife Clínica Veterinaria",
+    "description": "Complete veterinary care for your pets.",
+    "services": ["veterinaria"],
+    "location": {
+      "lat": 6.2442,
+      "lng": -75.5812,
+      "address": "Calle 45 #20-10, Medellín"
+    },
+    "contactNumber": "+57 3129876543",
+    "socialMedia": {
+      "facebook": "https://facebook.com/vetlifemed",
+      "instagram": "https://instagram.com/vetlife.med",
+      "website": ""
+    },
+    "images": ["https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"]
+  },
+  {
+    "name": "PetZone",
+    "description": "Your one-stop shop for pet grooming and supplies.",
+    "services": ["petshop", "grooming"],
+    "location": {
+      "lat": 4.6486,
+      "lng": -74.2479,
+      "address": "Avenida 68 #30-55, Bogotá"
+    },
+    "contactNumber": "+57 3015557890",
+    "socialMedia": {
+      "facebook": "",
+      "instagram": "https://instagram.com/petzone_col",
+      "website": ""
+    },
+    "images": ["https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"]
+  },
+  {
+    "name": "Mundo Animal",
+    "description": "Especialistas en salud y bienestar animal.",
+    "services": ["veterinaria", "grooming"],
+    "location": {
+      "lat": 3.4516,
+      "lng": -76.5319,
+      "address": "Calle 5 #32-14, Cali"
+    },
+    "contactNumber": "+57 3208889999",
+    "socialMedia": {
+      "facebook": "https://facebook.com/mundoanimalcali",
+      "instagram": "",
+      "website": "https://mundoanimal.co"
+    },
+    "images": ["https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"]
+  },
+  {
+    "name": "DoggyStyle Spa",
+    "description": "Luxury grooming services for dogs and cats.",
+    "services": ["grooming"],
+    "location": {
+      "lat": 4.6097,
+      "lng": -74.0818,
+      "address": "Calle 90 #13-25, Bogotá"
+    },
+    "contactNumber": "+57 3007778888",
+    "socialMedia": {
+      "facebook": "https://facebook.com/doggystylespa",
+      "instagram": "https://instagram.com/doggystylespa",
+      "website": ""
+    },
+    "images": [
+      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"
+    ]
+  },
+  {
+    "name": "Pet Family",
+    "description": "Cuidamos a tus mascotas como en casa.",
+    "services": ["veterinaria", "petshop"],
+    "location": {
+      "lat": 10.9878,
+      "lng": -74.7889,
+      "address": "Carrera 51B #79-40, Barranquilla"
+    },
+    "contactNumber": "+57 3011239876",
+    "socialMedia": {
+      "facebook": "",
+      "instagram": "",
+      "website": "https://petfamily.co"
+    },
+    "images": [
+      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"
+    ]
+  },
+  {
+    "name": "VetHouse",
+    "description": "Atención veterinaria a domicilio.",
+    "services": ["veterinaria"],
+    "location": {
+      "lat": 7.1193,
+      "lng": -73.1227,
+      "address": "Calle 34 #17-89, Bucaramanga"
+    },
+    "contactNumber": "+57 3112345678",
+    "socialMedia": {
+      "facebook": "https://facebook.com/vethouse",
+      "instagram": "",
+      "website": ""
+    },
+    "images": ["https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"]
+  },
+  {
+    "name": "Pet World",
+    "description": "Todo lo que tu mascota necesita en un solo lugar.",
+    "services": ["petshop"],
+    "location": {
+      "lat": 6.217,
+      "lng": -75.567,
+      "address": "Transversal 39 #76-120, Medellín"
+    },
+    "contactNumber": "+57 3009994455",
+    "socialMedia": {
+      "facebook": "",
+      "instagram": "https://instagram.com/petworld",
+      "website": ""
+    },
+    "images": [
+      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"
+    ]
+  },
+  {
+    "name": "Animal Center",
+    "description": "Servicios médicos y productos especializados para mascotas.",
+    "services": ["veterinaria", "petshop"],
+    "location": {
+      "lat": 4.142,
+      "lng": -73.6266,
+      "address": "Carrera 23 #45-60, Villavicencio"
+    },
+    "contactNumber": "+57 3129995566",
+    "socialMedia": {
+      "facebook": "",
+      "instagram": "",
+      "website": ""
+    },
+    "images": ["https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"]
+  },
+  {
+    "name": "Amigos Peludos",
+    "description": "Clínica veterinaria con amor por los animales.",
+    "services": ["veterinaria"],
+    "location": {
+      "lat": 5.0676,
+      "lng": -75.5174,
+      "address": "Carrera 15 #65-30, Manizales"
+    },
+    "contactNumber": "+57 3151234567",
+    "socialMedia": {
+      "facebook": "https://facebook.com/amigospeludos",
+      "instagram": "",
+      "website": ""
+    },
+    "images": [
+      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"
+    ]
+  }
+]
