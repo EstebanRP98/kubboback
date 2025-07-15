@@ -9,6 +9,7 @@ const businessSchema = new mongoose.Schema({
     lat: Number,
     lng: Number,
     address: String,
+    addressweb: String
   },
   contactNumber: String,
   socialMedia: {

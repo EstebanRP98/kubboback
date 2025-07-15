@@ -1,182 +1,210 @@
 [
   {
-    "name": "Happy Paws Petshop",
-    "description": "Wide variety of pet supplies and food.",
-    "services": ["petshop"],
+    "name": "Americat Clínica Veterinaria",
+    "description": "AmeriCat Veterinaria es un centro especializado en el cuidado de mascotas; trabajamos para dar el mejor cuidado a tu amigo de cuatro patas. Tenemos todos los servicios: medicina interna, consulta, pet shop, peluquería, laboratorio, cirugía y mucho más.",
+    "services": ["Medicina interna", "Consulta", "Pet Shop", "Peluquería", "Laboratorio", "Cirugía"],
     "location": {
-      "lat": 4.711,
-      "lng": -74.0721,
-      "address": "Carrera 10 #15-30, Bogotá"
+      "address": "Eloy Guambaña, Cuenca, Ecuador",
+      "addressweb": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7969.6860239852185!2d-78.965769!3d-2.861648!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cd195787d4bf6f%3A0xe46f27cdbc132e47!2sAmeriCat%20Veterinaria!5e0!3m2!1ses-419!2sec!4v1752525644815!5m2!1ses-419!2sec" 
     },
-    "contactNumber": "+57 3001234567",
+    "contactNumber": "+593 96 335 6608",
     "socialMedia": {
-      "facebook": "https://facebook.com/happypaws",
-      "instagram": "https://instagram.com/happypaws.co",
-      "website": "https://happypaws.co"
+      "facebook": "https://www.facebook.com/people/AmeriCat-Vet/100063904429552/",
+      "instagram": "https://www.instagram.com/americat_vet/",
+      "website": "https://veterinariaecuador.com/americat-veterinaria-cuenca/"
     },
     "images": [
-      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"
+      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2FAmeriCat.jpg?alt=media&token=5c00abeb-2827-4618-bfe1-2b489358e0aa"
     ]
   },
   {
-    "name": "VetLife Clínica Veterinaria",
-    "description": "Complete veterinary care for your pets.",
-    "services": ["veterinaria"],
+    "name": "Animal Shop",
+    "description": "Gran variedad de productos tanto en accesorios como en balanceados, ofrecemos servicio de estética canina para el más mimado de la casa.",
+    "services": ["Tienda de mascotas","Peluquería"],
     "location": {
-      "lat": 6.2442,
-      "lng": -75.5812,
-      "address": "Calle 45 #20-10, Medellín"
+      "address": "Av. Doce de Octubre, Cuenca 010201",
+      "addressweb": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31877.39291831424!2d-79.05561788916019!3d-2.909825199999988!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cd229d8b05414b%3A0x1658ea5f4e68f88b!2sAnimal%20Shop!5e0!3m2!1ses-419!2sec!4v1752527414728!5m2!1ses-419!2sec"
     },
-    "contactNumber": "+57 3129876543",
+    "contactNumber": "072819113",
     "socialMedia": {
-      "facebook": "https://facebook.com/vetlifemed",
-      "instagram": "https://instagram.com/vetlife.med",
+      "facebook": "https://www.facebook.com/Animal.Shop.Cuenca/?locale=es_LA",
+      "instagram": "https://www.instagram.com/animal.shop.cuenca/",
       "website": ""
     },
-    "images": ["https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"]
+    "images": ["https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2FANIMALSHOP.jpg?alt=media&token=6a313b81-713a-4abf-b228-85afafd8d447"]
   },
   {
-    "name": "PetZone",
-    "description": "Your one-stop shop for pet grooming and supplies.",
-    "services": ["petshop", "grooming"],
+    "name": "Animalvet",
+    "description": "Hospital veterinario con emergencias 24 horas, multiservicio para todas las mascotas",
+    "services": ["Veterinaria", "Consultas", "Ambulancia","Emergencias"],
     "location": {
-      "lat": 4.6486,
-      "lng": -74.2479,
-      "address": "Avenida 68 #30-55, Bogotá"
+      "address": "Calle Avenida Héroes De Verdeloma, Exterior:2-90, Cuenca 010101",
+      "addressweb":"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31877.93669575641!2d-79.03321748916015!3d-2.890532899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cd18189d20fd87%3A0xd88c950dd28edf88!2sClinica%20Veterinaria%20Animalvet!5e0!3m2!1ses-419!2sec!4v1752528503575!5m2!1ses-419!2sec"
     },
-    "contactNumber": "+57 3015557890",
+    "contactNumber": "099 255 6323",
     "socialMedia": {
-      "facebook": "",
-      "instagram": "https://instagram.com/petzone_col",
+      "facebook": "https://www.facebook.com/Animalvet2018/?locale=es_LA",
+      "instagram": "https://www.instagram.com/animalvetcuenca/",
+      "website": "https://veterinariaecuador.com/clinica-veterinaria-animalvet-cuenca/"
+    },
+    "images": ["https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2FAnimalVet.jpg?alt=media&token=2e557fbf-aaae-44c7-82e6-3a21c9e2a7ba"]
+  },
+  {
+    "name": "Bigotes",
+    "description": "Bigotes Pets Clinic",
+    "services": ["Peluquería", "Tiendas de mascotas"],
+    "location": {
+
+      "address": "Av. Yana Urco 320, Cuenca",
+      "addressweb":"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31877.93911437536!2d-79.03321752186426!3d-2.890446804115245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cd196461498825%3A0x834835e412ba6809!2sBigotes%20Pets%20Clinic!5e0!3m2!1ses-419!2sec!4v1752529820785!5m2!1ses-419!2sec"
+    },
+    "contactNumber": "0991582823",
+    "socialMedia": {
+      "facebook": "https://www.facebook.com/people/Bigotes-Pets-Clinic/61555597386842/#",
+      "instagram": "https://www.instagram.com/bigotespetsclinic/",
       "website": ""
     },
-    "images": ["https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"]
+    "images": ["https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fbigotes.jpg?alt=media&token=2de8960b-92dc-4557-a32e-05feff46b2d6"]
   },
   {
-    "name": "Mundo Animal",
-    "description": "Especialistas en salud y bienestar animal.",
-    "services": ["veterinaria", "grooming"],
+    "name": "Disproced",
+    "description": "Empresa dedicada a la distribución y comercialización de alimentos balanceados para mascotas.",
+    "services": ["Tienda de mascotas","Comida","Juguetes","Arena"],
     "location": {
-      "lat": 3.4516,
-      "lng": -76.5319,
-      "address": "Calle 5 #32-14, Cali"
+      "address": "Panamericana Norte km 12, 1 2 y, Cuenca 010109",
+      "addressweb":"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.89680934575!2d-78.91412472603227!3d-2.8461314393184693!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cd114183a0911f%3A0xba87de4af5138536!2sDISPROCED%20DISTRIBUCI%C3%93N%20ALIMENTOS%20PARA%20MASCOTAS!5e0!3m2!1ses-419!2sec!4v1752530632765!5m2!1ses-419!2sec"
     },
-    "contactNumber": "+57 3208889999",
+    "contactNumber": "099 215 4359",
     "socialMedia": {
-      "facebook": "https://facebook.com/mundoanimalcali",
-      "instagram": "",
-      "website": "https://mundoanimal.co"
-    },
-    "images": ["https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"]
-  },
-  {
-    "name": "DoggyStyle Spa",
-    "description": "Luxury grooming services for dogs and cats.",
-    "services": ["grooming"],
-    "location": {
-      "lat": 4.6097,
-      "lng": -74.0818,
-      "address": "Calle 90 #13-25, Bogotá"
-    },
-    "contactNumber": "+57 3007778888",
-    "socialMedia": {
-      "facebook": "https://facebook.com/doggystylespa",
-      "instagram": "https://instagram.com/doggystylespa",
+      "facebook": "hhttps://www.facebook.com/p/Disproced-100063812089227/?locale=es_LA",
+      "instagram": "https://www.instagram.com/disproced/?hl=es",
       "website": ""
     },
     "images": [
-      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"
+      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2FDisproced.jpg?alt=media&token=31e2ec6e-32f8-4353-b337-58e43465f71a"
     ]
   },
   {
-    "name": "Pet Family",
-    "description": "Cuidamos a tus mascotas como en casa.",
-    "services": ["veterinaria", "petshop"],
+    "name": "Ishi mishi",
+    "description": "Ishimishi más que una veterinaria, aquí no solo hay amor y cuidado para nuestros hermosos bebés de 4 patitas",
+    "services": ["veterinaria", "tienda de mascotas","cirugías","vacunas","esterilización"],
     "location": {
-      "lat": 10.9878,
-      "lng": -74.7889,
-      "address": "Carrera 51B #79-40, Barranquilla"
+      "address": "Av. Juan Iñiguez V. Esquina, Cuenca 010203",
+      "addressweb":"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.6809101888803!2d-79.01394782603174!3d-2.907902239546668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cd19b98a4802dd%3A0xff639b5fa5cfaa2a!2sCl%C3%ADnica%20Veterinaria%20ISHIMISHI!5e0!3m2!1ses-419!2sec!4v1752533058586!5m2!1ses-419!2sec"
     },
-    "contactNumber": "+57 3011239876",
+    "contactNumber": "097 920 3790",
     "socialMedia": {
-      "facebook": "",
-      "instagram": "",
-      "website": "https://petfamily.co"
+      "facebook": "https://www.facebook.com/ishimishi.ec",
+      "instagram": "https://www.instagram.com/ishimishi.ec/?hl=es",
+      "website": ""
     },
     "images": [
-      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"
+      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fishimishilocal.jpg?alt=media&token=7967f429-eadc-42a0-91c7-709a535e603e"
     ]
   },
   {
-    "name": "VetHouse",
+    "name": "Love wash",
     "description": "Atención veterinaria a domicilio.",
-    "services": ["veterinaria"],
+    "services": ["veterinaria","estética para mascotas","farmacia veterinaria","accesorios","alimentos premium"],
     "location": {
-      "lat": 7.1193,
-      "lng": -73.1227,
-      "address": "Calle 34 #17-89, Bucaramanga"
+      "address": "Federico Proaño 2-21, Cuenca 010203",
+      "addressweb":"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.676976885496!2d-79.01323392603169!3d-2.9090154395508456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cd18719ce89a07%3A0xe741724ec739f760!2sLove%20Wash!5e0!3m2!1ses-419!2sec!4v1752533204266!5m2!1ses-419!2sec"
     },
-    "contactNumber": "+57 3112345678",
+    "contactNumber": "096 900 3178",
     "socialMedia": {
-      "facebook": "https://facebook.com/vethouse",
-      "instagram": "",
+      "facebook": "https://www.facebook.com/LoveWashCuenca/?locale=es_LA",
+      "instagram": "https://www.instagram.com/lovewashconsultorioveterinario/",
       "website": ""
+    },
+    "images": ["https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Flovewash_local.jpg?alt=media&token=6b58c7d2-3958-4fd7-b878-56bb34c4bf51"]
+  },
+  {
+    "name": "Lumalia",
+    "description": "Ofrecemos atención integral para cuidar a nuestros amigos peludos.",
+    "services": ["hospedaje/guardería", "estética canina y felina","petshop","Vacunas y desparasitación","cirugía y laboratorio"],
+    "location": {
+      "address": "Tomas Ordóñez, y, Cuenca 010215",
+      "addressweb":"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.7014080804074!2d-79.00221152603169!3d-2.9020940395249464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cd3d16fc3d6bf1%3A0xe2294ad3cda023fa!2sLumalia%20Cl%C3%ADnica%20Veterinaria!5e0!3m2!1ses-419!2sec!4v1752533749201!5m2!1ses-419!2sec"
+    },
+    "contactNumber": "098 435 6722",
+    "socialMedia": {
+      "facebook": "https://www.facebook.com/lumalia.ve/",
+      "instagram": "https://www.instagram.com/lumalia.vet/",
+      "website": "https://veterinariaecuador.com/lumalia-clinica-veterinaria-cuenca/"
+    },
+    "images": [
+      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Flumalia_local.jpg?alt=media&token=b9bfcb97-4332-453f-8fa3-f90a8ea290f6"
+    ]
+  },
+  {
+    "name": "La mia mascota",
+    "description": "Servicios veterinarios integrales de la más alta calidad. Veterinaria y Pet shop para cuidar a tu mascota desde la nariz a la cola.",
+    "services": ["veterinaria", "petshop","hospitalización","cirugías"],
+    "location": {
+      "address": "Av Ordóñez Lasso, Cuenca",
+      "addressweb":"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.7402671101654!2d-79.03004231114504!3d-2.8910510999999914!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cd22af2d1e7f7d%3A0xca4261ae7f29df2!2sVeterinaria%20La%20Mia%20Mascota!5e0!3m2!1ses-419!2sec!4v1752534221985!5m2!1ses-419!2sec"
+    },
+    "contactNumber": "098 404 3395",
+    "socialMedia": {
+      "facebook": "https://www.facebook.com/lamiamascota/?locale=es_LA",
+      "instagram": "https://www.instagram.com/lamiamascota_ec/",
+      "website": "https://lamiamascota.com/"
     },
     "images": ["https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"]
   },
   {
-    "name": "Pet World",
-    "description": "Todo lo que tu mascota necesita en un solo lugar.",
-    "services": ["petshop"],
+    "name": "Paw Paw",
+    "description": "Tienda de suministros para mascotas en Cuenca. Mima al consentido de la casa con los productos premium que tenemos para ti",
+    "services": ["productos de alta calidad","alimento premium","juguetes interactivos","accesorios de moda","kits para nuevos dueños de mascotas"],
     "location": {
-      "lat": 6.217,
-      "lng": -75.567,
-      "address": "Transversal 39 #76-120, Medellín"
+      "address": "Edificio Puertas del Sol, Av Ordoñez Lasso, y Esquina, Cuenca 010150",
+      "addressweb":"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.7430900374216!2d-79.03234692603189!3d-2.890247239480802!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cd23f006eb9a17%3A0x9a987a17cbd8e87d!2sPAW%20PAW!5e0!3m2!1ses-419!2sec!4v1752534765973!5m2!1ses-419!2sec"
     },
-    "contactNumber": "+57 3009994455",
+    "contactNumber": "098 940 8964",
     "socialMedia": {
-      "facebook": "",
-      "instagram": "https://instagram.com/petworld",
+      "facebook": "https://es-la.facebook.com/PawPawTV/",
+      "instagram": "https://www.instagram.com/pawpaw_cue/",
       "website": ""
     },
     "images": [
-      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"
+      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fpawpawlocal.jpg?alt=media&token=7989afb9-d298-40c5-b20b-b8d687705023"
     ]
   },
   {
-    "name": "Animal Center",
-    "description": "Servicios médicos y productos especializados para mascotas.",
-    "services": ["veterinaria", "petshop"],
+    "name": "Shopping de mascotas",
+    "description": "El mejor lugar para ir de Shopping",
+    "services": ["tienda de mascotas"],
     "location": {
-      "lat": 4.142,
-      "lng": -73.6266,
-      "address": "Carrera 23 #45-60, Villavicencio"
+      "address": "Zona Rosa, Avenida de las Americas y Avenida Gran Colombia Frente al Banco del Pacífico, Cuenca 010101",
+      "addressweb":"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15938.97273708068!2d-79.04007176896647!3d-2.8902204017851507!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cd23f5a9cf410b%3A0x76df4e2b8c46bc3b!2sShooping%20de%20Mascotas!5e0!3m2!1ses-419!2sec!4v1752536306466!5m2!1ses-419!2sec"
     },
-    "contactNumber": "+57 3129995566",
+    "contactNumber": "099 151 5179",
     "socialMedia": {
       "facebook": "",
-      "instagram": "",
-      "website": ""
-    },
-    "images": ["https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"]
-  },
-  {
-    "name": "Amigos Peludos",
-    "description": "Clínica veterinaria con amor por los animales.",
-    "services": ["veterinaria"],
-    "location": {
-      "lat": 5.0676,
-      "lng": -75.5174,
-      "address": "Carrera 15 #65-30, Manizales"
-    },
-    "contactNumber": "+57 3151234567",
-    "socialMedia": {
-      "facebook": "https://facebook.com/amigospeludos",
-      "instagram": "",
+      "instagram": "https://www.instagram.com/shoopingdemascotas/",
       "website": ""
     },
     "images": [
-      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fmiamascota.jpg?alt=media&token=1456eaac-756a-4ae6-a91e-30fa2ac5ae91"
-    ]
-  }
+      "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2Fshoppingdemascostas.jpg?alt=media&token=870e47b8-5910-40db-9adb-b4752478501e"
+  
+]
+},
+{
+  "name": "Rivet Veterinaria",
+  "description": "Ofrecemos un servicio amigable y confiable para ti y tu mascota.Nos dedicamos a brindar los cuidados necesarios para tus mascotas ofreciendo una amplia gama de servicios médicos,  farmacia, servicio de grooming, pet shop y mas.",
+  "services": ["veterinaria" , "peluquería", " tienda de mascotas "],
+  "location": {
+    "address": "Av Ordóñez Lasso 774, Cuenca 010219",
+    "addressweb":"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d16308361.460334316!2d-92.45607214021516!3d3.692973855095515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cd23167fd10b07%3A0x6ba2d62109d53c57!2sRivet%20Veterinaria!5e0!3m2!1ses-419!2sec!4v1752537745048!5m2!1ses-419!2sec"
+  },
+  "contactNumber": "096 184 2936",
+  "socialMedia": {
+    "facebook": "https://www.facebook.com/veterinaria.rivet/?locale=es_LA",
+    "instagram": "https://www.instagram.com/veterinaria.rivet/?hl=es-la",
+    "website": ""
+  },
+  "images": [
+    "https://firebasestorage.googleapis.com/v0/b/mykubbo.firebasestorage.app/o/aliados%2FMASCOTA_RIVET.jpg?alt=media&token=8e763c99-dbf3-4120-8477-f8c521e1d52e"
+  ]
+}
 ]

@@ -15,7 +15,18 @@ businesses: async (_, { type, city, limit = 10, offset = 0 }) => {
   ])
 
   return { items, total }
-}
+},
+business: async (_, { id }) => {
+      try {
+        const negocio = await Business.findById(id)
+        if (!negocio) {
+          throw new Error('Business not found')
+        }
+        return negocio
+      } catch (error) {
+        throw new Error('Invalid ID or server error')
+      }
+    },
 
   }
 }

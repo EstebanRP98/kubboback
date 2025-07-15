@@ -6,6 +6,7 @@ const typeDefs = gql`
     lat: Float
     lng: Float
     address: String
+    addressweb: String
   }
 
   type SocialMedia {
