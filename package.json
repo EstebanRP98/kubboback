@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "seed:charms": "node seed-charms.js",
+    "seed:furniture": "node seed-furniture.js"
   },
   "keywords": [],
   "author": "",

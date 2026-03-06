@@ -6,16 +6,28 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 
 import typeDefs from './schema/typeDefs.js'
+import charmTypeDefs from './schema/charmTypeDefs.js'
+import furnitureTypeDefs from './schema/furnitureTypeDefs.js'
 import businessResolvers from './resolvers/businessResolvers.js'
+import charmResolvers from './resolvers/charmResolvers.js'
+import furnitureResolvers from './resolvers/furnitureResolvers.js'
 
 dotenv.config()
 
 const app = express()
 app.use(cors()) // Asegúrate de que CORS esté configurado correctamente para tu frontend
 
+const resolvers = {
+  Query: {
+    ...businessResolvers.Query,
+    ...charmResolvers.Query,
+    ...furnitureResolvers.Query,
+  },
+}
+
 const server = new ApolloServer({
-  typeDefs,
-  resolvers: businessResolvers,
+  typeDefs: [typeDefs, charmTypeDefs, furnitureTypeDefs],
+  resolvers,
 })
 
 await server.start()
