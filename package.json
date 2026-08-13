@@ -7,19 +7,25 @@
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "seed:charms": "node seed-charms.js",
-    "seed:furniture": "node seed-furniture.js"
+    "seed:furniture": "node seed-furniture.js",
+    "seed:collar": "node seed-collar.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1109.0",
+    "@aws-sdk/s3-request-presigner": "^3.1109.0",
     "apollo-server-express": "^3.13.0",
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "express": "^4.21.2",
     "graphql": "^16.11.0",
-    "mongoose": "^8.16.3"
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.16.3",
+    "nanoid": "^6.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

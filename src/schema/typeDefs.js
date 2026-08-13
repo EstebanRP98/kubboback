@@ -40,6 +40,8 @@ const typeDefs = gql`
     businesses(type: String, city: String, limit: Int, offset: Int): BusinessList
     business(id: ID!): Business
   }
+
+  type Mutation
 `
 
 export default typeDefs
