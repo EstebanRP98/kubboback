@@ -41,7 +41,9 @@ const typeDefs = gql`
     business(id: ID!): Business
   }
 
-  type Mutation
+  type Mutation {
+    _: Boolean
+  }
 `
 
 export default typeDefs
