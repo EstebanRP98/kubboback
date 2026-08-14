@@ -1,5 +1,7 @@
 // src/index.js
 import 'dotenv/config'   // debe ser el primer import para que process.env esté listo antes de que s3.js se evalúe
+import { webcrypto } from 'crypto'
+if (!globalThis.crypto) globalThis.crypto = webcrypto
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import mongoose from 'mongoose'
