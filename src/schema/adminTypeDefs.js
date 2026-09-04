@@ -62,12 +62,62 @@ const adminTypeDefs = gql`
     available: Boolean!
   }
 
+  type ConfirmedMuebleOrder {
+    id: ID!
+    code: String!
+    muebleSnapshot: String
+    totalPrice: Float!
+    snapshotImageUrl: String!
+    adminNotes: String!
+    itemsDescription: String!
+    confirmedAt: String!
+  }
+
+  input WallTypeInput {
+    key: String!
+    name: String!
+    illustrationUrl: String
+    defaultWidthCm: Float!
+    defaultHeightCm: Float!
+    available: Boolean
+    order: Int
+  }
+
+  input WallFinishInput {
+    key: String!
+    name: String!
+    kind: String!
+    colorHex: String
+    textureUrl: String
+    available: Boolean
+    order: Int
+  }
+
+  input FurnitureDesignInput {
+    key: String!
+    name: String!
+    glbUrl: String
+    thumbnailUrl: String
+    widthCm: Float!
+    heightCm: Float!
+    depthCm: Float!
+    price: Float!
+    available: Boolean
+    order: Int
+  }
+
   extend type Query {
     adminPendingOrders: [DraftOrder!]!
     adminConfirmedOrders: [ConfirmedOrder!]!
     adminCharmCategories: [CharmCategory!]!
     adminCollarCharms: [CollarCharm!]!
     adminCollarColors: [CollarColor!]!
+
+    adminPendingMuebleOrders: [DraftMuebleOrder!]!
+    adminConfirmedMuebleOrders: [ConfirmedMuebleOrder!]!
+    adminWallTypes: [WallType!]!
+    adminWallFinishes: [WallFinish!]!
+    adminFurnitureDesigns: [FurnitureDesign!]!
   }
 
   extend type Mutation {
@@ -97,6 +147,24 @@ const adminTypeDefs = gql`
     setCharmCategoryAvailable(id: ID!, available: Boolean!): CharmCategory!
 
     updateCollarPricing(input: UpdateCollarPricingInput!): CollarPricing!
+
+    confirmMuebleOrder(code: String!, adminNotes: String): ConfirmedMuebleOrder!
+    deleteDraftMuebleOrder(code: String!): Boolean!
+
+    createWallType(input: WallTypeInput!): WallType!
+    updateWallType(id: ID!, input: WallTypeInput!): WallType!
+    deleteWallType(id: ID!): Boolean!
+
+    createWallFinish(input: WallFinishInput!): WallFinish!
+    updateWallFinish(id: ID!, input: WallFinishInput!): WallFinish!
+    deleteWallFinish(id: ID!): Boolean!
+    getWallFinishTextureUploadUrl(filename: String!, contentType: String!): UploadUrlPayload!
+
+    createFurnitureDesign(input: FurnitureDesignInput!): FurnitureDesign!
+    updateFurnitureDesign(id: ID!, input: FurnitureDesignInput!): FurnitureDesign!
+    deleteFurnitureDesign(id: ID!): Boolean!
+    getFurnitureGlbUploadUrl(filename: String!, contentType: String!): UploadUrlPayload!
+    getFurnitureThumbnailUploadUrl(filename: String!, contentType: String!): UploadUrlPayload!
   }
 `
 

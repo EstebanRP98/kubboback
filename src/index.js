@@ -11,12 +11,14 @@ import typeDefs from './schema/typeDefs.js'
 import charmTypeDefs from './schema/charmTypeDefs.js'
 import furnitureTypeDefs from './schema/furnitureTypeDefs.js'
 import collarTypeDefs from './schema/collarTypeDefs.js'
+import muebleTypeDefs from './schema/muebleTypeDefs.js'
 import adminTypeDefs from './schema/adminTypeDefs.js'
 
 import businessResolvers from './resolvers/businessResolvers.js'
 import charmResolvers from './resolvers/charmResolvers.js'
 import furnitureResolvers from './resolvers/furnitureResolvers.js'
 import collarResolvers from './resolvers/collarResolvers.js'
+import muebleResolvers from './resolvers/muebleResolvers.js'
 import adminResolvers from './resolvers/adminResolvers.js'
 
 import { getAdminFromToken } from './middleware/auth.js'
@@ -31,16 +33,18 @@ const resolvers = {
     ...charmResolvers.Query,
     ...furnitureResolvers.Query,
     ...collarResolvers.Query,
+    ...muebleResolvers.Query,
     ...adminResolvers.Query,
   },
   Mutation: {
     ...collarResolvers.Mutation,
+    ...muebleResolvers.Mutation,
     ...adminResolvers.Mutation,
   },
 }
 
 const server = new ApolloServer({
-  typeDefs: [typeDefs, charmTypeDefs, furnitureTypeDefs, collarTypeDefs, adminTypeDefs],
+  typeDefs: [typeDefs, charmTypeDefs, furnitureTypeDefs, collarTypeDefs, muebleTypeDefs, adminTypeDefs],
   resolvers,
   context: ({ req }) => ({
     req,

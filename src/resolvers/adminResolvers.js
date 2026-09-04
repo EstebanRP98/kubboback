@@ -8,6 +8,11 @@ import CollarPricing from '../models/CollarPricing.js'
 import DraftOrder from '../models/DraftOrder.js'
 import Order from '../models/Order.js'
 import AdminUser from '../models/AdminUser.js'
+import WallType from '../models/WallType.js'
+import WallFinish from '../models/WallFinish.js'
+import FurnitureDesign from '../models/FurnitureDesign.js'
+import DraftMuebleOrder from '../models/DraftMuebleOrder.js'
+import MuebleOrder from '../models/MuebleOrder.js'
 import { generatePresignedUrl, generatePresignedGetUrl, isS3Key, moveObject } from '../lib/s3.js'
 import { requireAdmin } from '../middleware/auth.js'
 
@@ -95,6 +100,74 @@ const adminResolvers = {
           collarSnapshot: obj.collarSnapshot ? JSON.stringify(obj.collarSnapshot) : null,
           confirmedAt: o.confirmedAt?.toISOString(),
         }
+      }))
+    },
+
+    adminPendingMuebleOrders: async (_, __, context) => {
+      requireAdmin(context)
+      const drafts = await DraftMuebleOrder.find({ status: 'pending' }).sort({ createdAt: -1 })
+      return Promise.all(drafts.map(async draft => {
+        const obj = draft.toObject({ virtuals: true })
+        if (obj.snapshotImageUrl && isS3Key(obj.snapshotImageUrl)) {
+          obj.snapshotImageUrl = await generatePresignedGetUrl(obj.snapshotImageUrl)
+        }
+        if (obj.items?.length) {
+          obj.items = await Promise.all(obj.items.map(async item => {
+            if (item.glbUrl && isS3Key(item.glbUrl)) {
+              return { ...item, glbUrl: await generatePresignedGetUrl(item.glbUrl) }
+            }
+            return item
+          }))
+        }
+        obj.expiresAt = obj.expiresAt?.toISOString?.() ?? String(obj.expiresAt)
+        obj.createdAt = obj.createdAt?.toISOString?.() ?? String(obj.createdAt)
+        return obj
+      }))
+    },
+
+    adminConfirmedMuebleOrders: async (_, __, context) => {
+      requireAdmin(context)
+      const orders = await MuebleOrder.find().sort({ confirmedAt: -1 })
+      return Promise.all(orders.map(async o => {
+        const obj = o.toObject({ virtuals: true })
+        let snapshotImageUrl = obj.snapshotImageUrl || ''
+        if (snapshotImageUrl && isS3Key(snapshotImageUrl)) {
+          snapshotImageUrl = await generatePresignedGetUrl(snapshotImageUrl)
+        }
+        return {
+          ...obj,
+          id: o._id.toString(),
+          snapshotImageUrl,
+          itemsDescription: obj.itemsDescription || '',
+          muebleSnapshot: obj.muebleSnapshot ? JSON.stringify(obj.muebleSnapshot) : null,
+          confirmedAt: o.confirmedAt?.toISOString(),
+        }
+      }))
+    },
+
+    adminWallTypes: async (_, __, context) => {
+      requireAdmin(context)
+      return WallType.find().sort({ order: 1 })
+    },
+
+    adminWallFinishes: async (_, __, context) => {
+      requireAdmin(context)
+      const finishes = await WallFinish.find().sort({ order: 1 })
+      return Promise.all(finishes.map(async f => {
+        const obj = f.toObject({ virtuals: true })
+        if (obj.textureUrl && isS3Key(obj.textureUrl)) obj.textureUrl = await generatePresignedGetUrl(obj.textureUrl)
+        return obj
+      }))
+    },
+
+    adminFurnitureDesigns: async (_, __, context) => {
+      requireAdmin(context)
+      const designs = await FurnitureDesign.find().sort({ order: 1 })
+      return Promise.all(designs.map(async d => {
+        const obj = d.toObject({ virtuals: true })
+        if (obj.glbUrl && isS3Key(obj.glbUrl)) obj.glbUrl = await generatePresignedGetUrl(obj.glbUrl)
+        if (obj.thumbnailUrl && isS3Key(obj.thumbnailUrl)) obj.thumbnailUrl = await generatePresignedGetUrl(obj.thumbnailUrl)
+        return obj
       }))
     },
   },
@@ -287,6 +360,157 @@ const adminResolvers = {
         await pricing.save()
       }
       return pricing
+    },
+
+    // ── Mueble: pedidos ───────────────────────────────────────────
+    confirmMuebleOrder: async (_, { code, adminNotes }, context) => {
+      requireAdmin(context)
+      const draft = await DraftMuebleOrder.findOne({ code })
+      if (!draft) throw new Error('Pedido no encontrado')
+
+      // snapshotImageUrl se guarda como S3 key (ej. "drafts/mueble-snapshots/MB-XXXX.png")
+      let snapshotKey = draft.snapshotImageUrl || ''
+      if (snapshotKey && isS3Key(snapshotKey) && snapshotKey.startsWith('drafts/')) {
+        try {
+          const destKey = snapshotKey.replace('drafts/', 'orders/')
+          await moveObject(snapshotKey, destKey)
+          snapshotKey = destKey
+        } catch { /* keep original key if S3 move fails */ }
+      }
+
+      const itemsDescription = draft.items
+        .map((item, i) => `${i + 1}. ${item.name} ($${item.price})`)
+        .join(' · ')
+
+      const order = await MuebleOrder.create({
+        code:           draft.code,
+        muebleSnapshot: {
+          wallType:   draft.wallType,
+          wallFinish: draft.wallFinish,
+          widthCm:    draft.widthCm,
+          heightCm:   draft.heightCm,
+          items:      draft.items,
+        },
+        totalPrice:       draft.totalPrice,
+        snapshotImageUrl: snapshotKey, // stored as S3 key
+        adminNotes:       adminNotes || '',
+        itemsDescription,
+      })
+
+      draft.status = 'confirmed'
+      await draft.save()
+
+      // Generate presigned GET URL for the response
+      let snapshotImageUrl = snapshotKey
+      if (snapshotKey && isS3Key(snapshotKey)) {
+        snapshotImageUrl = await generatePresignedGetUrl(snapshotKey)
+      }
+
+      return {
+        ...order.toObject({ virtuals: true }),
+        id: order._id.toString(),
+        snapshotImageUrl,
+        muebleSnapshot: JSON.stringify(order.muebleSnapshot),
+        confirmedAt: order.confirmedAt?.toISOString(),
+      }
+    },
+
+    deleteDraftMuebleOrder: async (_, { code }, context) => {
+      requireAdmin(context)
+      await DraftMuebleOrder.deleteOne({ code })
+      return true
+    },
+
+    // ── Mueble: WallType CRUD ──────────────────────────────────────
+    createWallType: async (_, { input }, context) => {
+      requireAdmin(context)
+      return WallType.create(input)
+    },
+    updateWallType: async (_, { id, input }, context) => {
+      requireAdmin(context)
+      return WallType.findByIdAndUpdate(id, input, { new: true })
+    },
+    deleteWallType: async (_, { id }, context) => {
+      requireAdmin(context)
+      await WallType.findByIdAndDelete(id)
+      return true
+    },
+
+    // ── Mueble: WallFinish CRUD ────────────────────────────────────
+    createWallFinish: async (_, { input }, context) => {
+      requireAdmin(context)
+      const textureUrl = input.textureUrl ? extractS3Key(input.textureUrl) : ''
+      const finish = await WallFinish.create({ ...input, textureUrl })
+      const obj = finish.toObject({ virtuals: true })
+      if (obj.textureUrl && isS3Key(obj.textureUrl)) obj.textureUrl = await generatePresignedGetUrl(obj.textureUrl)
+      return obj
+    },
+    updateWallFinish: async (_, { id, input }, context) => {
+      requireAdmin(context)
+      const textureUrl = input.textureUrl ? extractS3Key(input.textureUrl) : ''
+      const finish = await WallFinish.findByIdAndUpdate(id, { ...input, textureUrl }, { new: true })
+      const obj = finish.toObject({ virtuals: true })
+      if (obj.textureUrl && isS3Key(obj.textureUrl)) obj.textureUrl = await generatePresignedGetUrl(obj.textureUrl)
+      return obj
+    },
+    deleteWallFinish: async (_, { id }, context) => {
+      requireAdmin(context)
+      await WallFinish.findByIdAndDelete(id)
+      return true
+    },
+    getWallFinishTextureUploadUrl: async (_, { filename, contentType }, context) => {
+      requireAdmin(context)
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/webp']
+      if (!allowedTypes.includes(contentType)) throw new Error('Tipo de archivo no permitido')
+      if (!filename.startsWith('wall-finishes/')) throw new Error('Ruta de archivo no permitida')
+      const uploadUrl = await generatePresignedUrl(filename, contentType)
+      const publicUrl = await generatePresignedGetUrl(filename, 300)
+      return { uploadUrl, publicUrl, key: filename }
+    },
+
+    // ── Mueble: FurnitureDesign CRUD ───────────────────────────────
+    createFurnitureDesign: async (_, { input }, context) => {
+      requireAdmin(context)
+      const glbUrl = input.glbUrl ? extractS3Key(input.glbUrl) : ''
+      const thumbnailUrl = input.thumbnailUrl ? extractS3Key(input.thumbnailUrl) : ''
+      const design = await FurnitureDesign.create({ ...input, glbUrl, thumbnailUrl })
+      const obj = design.toObject({ virtuals: true })
+      if (obj.glbUrl && isS3Key(obj.glbUrl)) obj.glbUrl = await generatePresignedGetUrl(obj.glbUrl)
+      if (obj.thumbnailUrl && isS3Key(obj.thumbnailUrl)) obj.thumbnailUrl = await generatePresignedGetUrl(obj.thumbnailUrl)
+      return obj
+    },
+    updateFurnitureDesign: async (_, { id, input }, context) => {
+      requireAdmin(context)
+      const glbUrl = input.glbUrl ? extractS3Key(input.glbUrl) : ''
+      const thumbnailUrl = input.thumbnailUrl ? extractS3Key(input.thumbnailUrl) : ''
+      const design = await FurnitureDesign.findByIdAndUpdate(id, { ...input, glbUrl, thumbnailUrl }, { new: true })
+      const obj = design.toObject({ virtuals: true })
+      if (obj.glbUrl && isS3Key(obj.glbUrl)) obj.glbUrl = await generatePresignedGetUrl(obj.glbUrl)
+      if (obj.thumbnailUrl && isS3Key(obj.thumbnailUrl)) obj.thumbnailUrl = await generatePresignedGetUrl(obj.thumbnailUrl)
+      return obj
+    },
+    deleteFurnitureDesign: async (_, { id }, context) => {
+      requireAdmin(context)
+      await FurnitureDesign.findByIdAndDelete(id)
+      return true
+    },
+    getFurnitureGlbUploadUrl: async (_, { filename, contentType }, context) => {
+      requireAdmin(context)
+      const allowedTypes = ['model/gltf-binary', 'application/octet-stream']
+      if (!allowedTypes.includes(contentType)) throw new Error('Tipo de archivo no permitido')
+      if (!filename.startsWith('furniture/')) throw new Error('Ruta de archivo no permitida')
+      const uploadUrl = await generatePresignedUrl(filename, contentType)
+      const publicUrl = await generatePresignedGetUrl(filename, 300)
+      return { uploadUrl, publicUrl, key: filename }
+    },
+    getFurnitureThumbnailUploadUrl: async (_, { filename, contentType }, context) => {
+      requireAdmin(context)
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
+      if (!allowedTypes.includes(contentType)) throw new Error('Tipo de archivo no permitido')
+      if (!filename.startsWith('furniture/')) throw new Error('Ruta de archivo no permitida')
+      const uploadUrl = await generatePresignedUrl(filename, contentType)
+      const publicUrl = await generatePresignedGetUrl(filename, 300)
+      return { uploadUrl, publicUrl, key: filename }
     },
   },
 }

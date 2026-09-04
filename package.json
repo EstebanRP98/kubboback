@@ -8,7 +8,8 @@
     "start": "node src/index.js",
     "seed:charms": "node seed-charms.js",
     "seed:furniture": "node seed-furniture.js",
-    "seed:collar": "node seed-collar.js"
+    "seed:collar": "node seed-collar.js",
+    "seed:mueble": "node seed-mueble.js"
   },
   "keywords": [],
   "author": "",
