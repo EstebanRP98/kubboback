@@ -1,3 +1,5 @@
+// Seed del catálogo de Arma tu Mueble (tipos de pared, acabados y diseños de mueble).
+// NO destructivo: solo crea lo que falta. Uso: npm run seed:mueble
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 
@@ -34,17 +36,23 @@ const furnitureDesigns = [
 ]
 
 // ── Seed ──────────────────────────────────────────────────────
-await WallType.deleteMany({})
-await WallType.insertMany(wallTypes)
-console.log(`✅ WallTypes: ${wallTypes.length} insertados`)
+// NO destructivo: solo crea los registros cuya `key` todavía no existe. Nunca borra ni
+// sobrescribe nada — el catálogo real se administra desde /admin/catalogo (GLB, miniaturas,
+// precios), así que este script es seguro de correr contra una BD que ya tiene datos.
+// Ojo: si borraste a propósito un registro del seed desde el admin, volverá a crearse.
+async function seedMissing(Model, docs, label) {
+  let created = 0
+  for (const doc of docs) {
+    if (await Model.exists({ key: doc.key })) continue
+    await Model.create(doc)
+    created++
+  }
+  console.log(`✅ ${label}: ${created} creados, ${docs.length - created} ya existían (sin tocar)`)
+}
 
-await WallFinish.deleteMany({})
-await WallFinish.insertMany(wallFinishes)
-console.log(`✅ WallFinishes: ${wallFinishes.length} insertados`)
-
-await FurnitureDesign.deleteMany({})
-await FurnitureDesign.insertMany(furnitureDesigns)
-console.log(`✅ FurnitureDesigns: ${furnitureDesigns.length} insertados`)
+await seedMissing(WallType, wallTypes, 'WallTypes')
+await seedMissing(WallFinish, wallFinishes, 'WallFinishes')
+await seedMissing(FurnitureDesign, furnitureDesigns, 'FurnitureDesigns')
 
 await mongoose.disconnect()
 console.log('🎉 Seed completado')
