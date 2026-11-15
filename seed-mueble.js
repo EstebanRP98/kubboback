@@ -2,6 +2,7 @@
 // NO destructivo: solo crea lo que falta. Uso: npm run seed:mueble
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
+import { seedMissing } from './seed-utils.js'
 
 dotenv.config()
 
@@ -36,19 +37,8 @@ const furnitureDesigns = [
 ]
 
 // ── Seed ──────────────────────────────────────────────────────
-// NO destructivo: solo crea los registros cuya `key` todavía no existe. Nunca borra ni
-// sobrescribe nada — el catálogo real se administra desde /admin/catalogo (GLB, miniaturas,
-// precios), así que este script es seguro de correr contra una BD que ya tiene datos.
-// Ojo: si borraste a propósito un registro del seed desde el admin, volverá a crearse.
-async function seedMissing(Model, docs, label) {
-  let created = 0
-  for (const doc of docs) {
-    if (await Model.exists({ key: doc.key })) continue
-    await Model.create(doc)
-    created++
-  }
-  console.log(`✅ ${label}: ${created} creados, ${docs.length - created} ya existían (sin tocar)`)
-}
+// NO destructivo: solo crea lo que falta (ver seed-utils.js). El catálogo real se administra
+// desde /admin/catalogo (GLB, miniaturas, precios).
 
 await seedMissing(WallType, wallTypes, 'WallTypes')
 await seedMissing(WallFinish, wallFinishes, 'WallFinishes')

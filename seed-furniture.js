@@ -1,7 +1,9 @@
 // seed-furniture.js — ejecutar con: npm run seed:furniture
+// NO destructivo: solo crea los muebles que faltan (por `name`); nunca borra ni sobrescribe.
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import Furniture from './src/models/Furniture.js'
+import { seedMissing } from './seed-utils.js'
 
 dotenv.config()
 
@@ -170,11 +172,8 @@ async function seed() {
     await mongoose.connect(process.env.MONGO_URI)
     console.log('✅ MongoDB conectado')
 
-    await Furniture.deleteMany({})
-    console.log('🗑️  Muebles anteriores eliminados')
-
-    const created = await Furniture.insertMany(furniture)
-    console.log(`✅ ${created.length} muebles insertados:`)
+    // Solo crea los muebles cuyo `name` aún no existe (ver seed-utils.js)
+    const created = await seedMissing(Furniture, furniture, 'Muebles del directorio', 'name')
     created.forEach(f =>
       console.log(`   ${f.type === 'repisa' ? '🪵' : '🐱'} ${f.name} (${f.type}) — $${f.price}`)
     )

@@ -1,10 +1,12 @@
 // seed-charms.js
 // Ejecutar con: node seed-charms.js
 // Requiere el archivo .env con MONGO_URI configurado
+// NO destructivo: solo crea los charms que faltan (por `name`); nunca borra ni sobrescribe.
 
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import Charm from './src/models/Charm.js'
+import { seedMissing } from './seed-utils.js'
 
 dotenv.config()
 
@@ -174,12 +176,8 @@ async function seed() {
     await mongoose.connect(process.env.MONGO_URI)
     console.log('✅ MongoDB conectado')
 
-    // Elimina charms anteriores para evitar duplicados
-    await Charm.deleteMany({})
-    console.log('🗑️  Charms anteriores eliminados')
-
-    const created = await Charm.insertMany(charms)
-    console.log(`✅ ${created.length} charms insertados:`)
+    // Solo crea los charms cuyo `name` aún no existe (ver seed-utils.js)
+    const created = await seedMissing(Charm, charms, 'Charms del directorio', 'name')
     created.forEach(c => console.log(`   ${c.emoji} ${c.name} — $${c.price}`))
 
   } catch (err) {

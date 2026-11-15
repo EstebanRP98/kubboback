@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 import dotenv from 'dotenv'
+import { seedMissing } from './seed-utils.js'
 
 dotenv.config()
 
@@ -51,17 +52,11 @@ const charms = [
 ]
 
 // ── Seed ──────────────────────────────────────────────────────
-await CollarColor.deleteMany({})
-await CollarColor.insertMany(colors)
-console.log(`✅ CollarColors: ${colors.length} insertados`)
-
-await CollarDesign.deleteMany({})
-await CollarDesign.insertMany(designs)
-console.log(`✅ CollarDesigns: ${designs.length} insertados`)
-
-await CollarCharm.deleteMany({})
-await CollarCharm.insertMany(charms)
-console.log(`✅ CollarCharms: ${charms.length} insertados`)
+// NO destructivo: solo crea lo que falta (ver seed-utils.js).
+// CollarDesign no tiene `key`: se identifica por `name`.
+await seedMissing(CollarColor, colors, 'CollarColors')
+await seedMissing(CollarDesign, designs, 'CollarDesigns', 'name')
+await seedMissing(CollarCharm, charms, 'CollarCharms')
 
 const existingPricing = await CollarPricing.findOne()
 if (!existingPricing) {
