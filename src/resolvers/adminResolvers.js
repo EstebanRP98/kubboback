@@ -13,6 +13,12 @@ import WallFinish from '../models/WallFinish.js'
 import FurnitureDesign from '../models/FurnitureDesign.js'
 import DraftMuebleOrder from '../models/DraftMuebleOrder.js'
 import MuebleOrder from '../models/MuebleOrder.js'
+import Ambient from '../models/Ambient.js'
+import FloorFinish from '../models/FloorFinish.js'
+import {
+  serializeAmbient, serializeWallType, serializeFinish, serializeDesign, serializeDraft, signS3Value,
+} from '../lib/muebleSerialize.js'
+import { SHAPES } from '../lib/muebleGeometry.js'
 import { generatePresignedUrl, generatePresignedGetUrl, isS3Key, moveObject } from '../lib/s3.js'
 import { requireAdmin } from '../middleware/auth.js'
 
@@ -24,6 +30,26 @@ function getCharmCategories(charm) {
 }
 
 // Extracts the S3 key from a presigned URL (or returns the value if it's already a key)
+const SCOPES = ['interior', 'exterior', 'both']
+function checkScope(scope) {
+  if (scope != null && !SCOPES.includes(scope)) throw new Error('Alcance no válido (interior, exterior o ambos)')
+}
+
+// Modelo de espacio: valida la forma y que haya una medida por defecto por cada campo de esa forma
+function cleanWallTypeInput(input) {
+  const out = { ...input }
+  if (out.shape != null) {
+    if (!SHAPES.includes(out.shape)) throw new Error('Forma no válida')
+    const expected = { flat: 1, corner: 2, u: 3, room: 2, l: 4 }[out.shape]
+    if (out.defaultLengthsCm && out.defaultLengthsCm.length !== expected) {
+      throw new Error(`La forma elegida necesita ${expected} medida(s) por defecto`)
+    }
+    if (out.defaultLengthsCm?.some(v => !(v > 0))) throw new Error('Las medidas por defecto deben ser mayores a 0')
+  }
+  if (out.ambients) out.ambients = out.ambients.filter(Boolean)
+  return out
+}
+
 function extractS3Key(value) {
   if (!value) return ''
   if (isS3Key(value)) return value
@@ -106,23 +132,7 @@ const adminResolvers = {
     adminPendingMuebleOrders: async (_, __, context) => {
       requireAdmin(context)
       const drafts = await DraftMuebleOrder.find({ status: 'pending' }).sort({ createdAt: -1 })
-      return Promise.all(drafts.map(async draft => {
-        const obj = draft.toObject({ virtuals: true })
-        if (obj.snapshotImageUrl && isS3Key(obj.snapshotImageUrl)) {
-          obj.snapshotImageUrl = await generatePresignedGetUrl(obj.snapshotImageUrl)
-        }
-        if (obj.items?.length) {
-          obj.items = await Promise.all(obj.items.map(async item => {
-            if (item.glbUrl && isS3Key(item.glbUrl)) {
-              return { ...item, glbUrl: await generatePresignedGetUrl(item.glbUrl) }
-            }
-            return item
-          }))
-        }
-        obj.expiresAt = obj.expiresAt?.toISOString?.() ?? String(obj.expiresAt)
-        obj.createdAt = obj.createdAt?.toISOString?.() ?? String(obj.createdAt)
-        return obj
-      }))
+      return Promise.all(drafts.map(serializeDraft))
     },
 
     adminConfirmedMuebleOrders: async (_, __, context) => {
@@ -138,6 +148,7 @@ const adminResolvers = {
           ...obj,
           id: o._id.toString(),
           snapshotImageUrl,
+          wallSnapshots: await Promise.all((obj.wallSnapshots || []).map(async w => ({ wallIndex: w.wallIndex, url: await signS3Value(w.url) }))),
           itemsDescription: obj.itemsDescription || '',
           muebleSnapshot: obj.muebleSnapshot ? JSON.stringify(obj.muebleSnapshot) : null,
           confirmedAt: o.confirmedAt?.toISOString(),
@@ -145,30 +156,29 @@ const adminResolvers = {
       }))
     },
 
+    adminAmbients: async (_, __, context) => {
+      requireAdmin(context)
+      return (await Ambient.find().sort({ order: 1 })).map(serializeAmbient)
+    },
+
+    adminFloorFinishes: async (_, __, context) => {
+      requireAdmin(context)
+      return Promise.all((await FloorFinish.find().sort({ order: 1 })).map(serializeFinish))
+    },
+
     adminWallTypes: async (_, __, context) => {
       requireAdmin(context)
-      return WallType.find().sort({ order: 1 })
+      return (await WallType.find().sort({ order: 1 })).map(serializeWallType)
     },
 
     adminWallFinishes: async (_, __, context) => {
       requireAdmin(context)
-      const finishes = await WallFinish.find().sort({ order: 1 })
-      return Promise.all(finishes.map(async f => {
-        const obj = f.toObject({ virtuals: true })
-        if (obj.textureUrl && isS3Key(obj.textureUrl)) obj.textureUrl = await generatePresignedGetUrl(obj.textureUrl)
-        return obj
-      }))
+      return Promise.all((await WallFinish.find().sort({ order: 1 })).map(serializeFinish))
     },
 
     adminFurnitureDesigns: async (_, __, context) => {
       requireAdmin(context)
-      const designs = await FurnitureDesign.find().sort({ order: 1 })
-      return Promise.all(designs.map(async d => {
-        const obj = d.toObject({ virtuals: true })
-        if (obj.glbUrl && isS3Key(obj.glbUrl)) obj.glbUrl = await generatePresignedGetUrl(obj.glbUrl)
-        if (obj.thumbnailUrl && isS3Key(obj.thumbnailUrl)) obj.thumbnailUrl = await generatePresignedGetUrl(obj.thumbnailUrl)
-        return obj
-      }))
+      return Promise.all((await FurnitureDesign.find().sort({ order: 1 })).map(serializeDesign))
     },
   },
 
@@ -378,6 +388,20 @@ const adminResolvers = {
         } catch { /* keep original key if S3 move fails */ }
       }
 
+      // Fotos de frente por pared: también pasan de drafts/ a orders/
+      const wallSnapshots = []
+      for (const ws of draft.wallSnapshots || []) {
+        let key = ws.url
+        if (key && isS3Key(key) && key.startsWith('drafts/')) {
+          try {
+            const dest = key.replace('drafts/', 'orders/')
+            await moveObject(key, dest)
+            key = dest
+          } catch { /* keep original key if S3 move fails */ }
+        }
+        wallSnapshots.push({ wallIndex: ws.wallIndex, url: key })
+      }
+
       const itemsDescription = draft.items
         .map((item, i) => `${i + 1}. ${item.name} ($${item.price})`)
         .join(' · ')
@@ -390,9 +414,11 @@ const adminResolvers = {
           widthCm:    draft.widthCm,
           heightCm:   draft.heightCm,
           items:      draft.items,
+          space:      draft.space || null,
         },
         totalPrice:       draft.totalPrice,
         snapshotImageUrl: snapshotKey, // stored as S3 key
+        wallSnapshots,
         adminNotes:       adminNotes || '',
         itemsDescription,
       })
@@ -410,6 +436,7 @@ const adminResolvers = {
         ...order.toObject({ virtuals: true }),
         id: order._id.toString(),
         snapshotImageUrl,
+        wallSnapshots: await Promise.all(wallSnapshots.map(async w => ({ wallIndex: w.wallIndex, url: await signS3Value(w.url) }))),
         muebleSnapshot: JSON.stringify(order.muebleSnapshot),
         confirmedAt: order.confirmedAt?.toISOString(),
       }
@@ -421,14 +448,57 @@ const adminResolvers = {
       return true
     },
 
+    // ── Mueble: Ambient CRUD ───────────────────────────────────────
+    createAmbient: async (_, { input }, context) => {
+      requireAdmin(context)
+      return serializeAmbient(await Ambient.create(input))
+    },
+    updateAmbient: async (_, { id, input }, context) => {
+      requireAdmin(context)
+      return serializeAmbient(await Ambient.findByIdAndUpdate(id, input, { new: true }))
+    },
+    deleteAmbient: async (_, { id }, context) => {
+      requireAdmin(context)
+      await Ambient.findByIdAndDelete(id)
+      return true
+    },
+
+    // ── Mueble: FloorFinish CRUD ───────────────────────────────────
+    createFloorFinish: async (_, { input }, context) => {
+      requireAdmin(context)
+      checkScope(input.scope)
+      const textureUrl = input.textureUrl ? extractS3Key(input.textureUrl) : ''
+      return serializeFinish(await FloorFinish.create({ ...input, textureUrl }))
+    },
+    updateFloorFinish: async (_, { id, input }, context) => {
+      requireAdmin(context)
+      checkScope(input.scope)
+      const textureUrl = input.textureUrl ? extractS3Key(input.textureUrl) : ''
+      return serializeFinish(await FloorFinish.findByIdAndUpdate(id, { ...input, textureUrl }, { new: true }))
+    },
+    deleteFloorFinish: async (_, { id }, context) => {
+      requireAdmin(context)
+      await FloorFinish.findByIdAndDelete(id)
+      return true
+    },
+    getFloorFinishTextureUploadUrl: async (_, { filename, contentType }, context) => {
+      requireAdmin(context)
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/webp']
+      if (!allowedTypes.includes(contentType)) throw new Error('Tipo de archivo no permitido')
+      if (!filename.startsWith('floor-finishes/') || filename.includes('..')) throw new Error('Ruta de archivo no permitida')
+      const uploadUrl = await generatePresignedUrl(filename, contentType)
+      const publicUrl = await generatePresignedGetUrl(filename, 300)
+      return { uploadUrl, publicUrl, key: filename }
+    },
+
     // ── Mueble: WallType CRUD ──────────────────────────────────────
     createWallType: async (_, { input }, context) => {
       requireAdmin(context)
-      return WallType.create(input)
+      return serializeWallType(await WallType.create(cleanWallTypeInput(input)))
     },
     updateWallType: async (_, { id, input }, context) => {
       requireAdmin(context)
-      return WallType.findByIdAndUpdate(id, input, { new: true })
+      return serializeWallType(await WallType.findByIdAndUpdate(id, cleanWallTypeInput(input), { new: true }))
     },
     deleteWallType: async (_, { id }, context) => {
       requireAdmin(context)
@@ -440,18 +510,14 @@ const adminResolvers = {
     createWallFinish: async (_, { input }, context) => {
       requireAdmin(context)
       const textureUrl = input.textureUrl ? extractS3Key(input.textureUrl) : ''
-      const finish = await WallFinish.create({ ...input, textureUrl })
-      const obj = finish.toObject({ virtuals: true })
-      if (obj.textureUrl && isS3Key(obj.textureUrl)) obj.textureUrl = await generatePresignedGetUrl(obj.textureUrl)
-      return obj
+      checkScope(input.scope)
+      return serializeFinish(await WallFinish.create({ ...input, textureUrl }))
     },
     updateWallFinish: async (_, { id, input }, context) => {
       requireAdmin(context)
       const textureUrl = input.textureUrl ? extractS3Key(input.textureUrl) : ''
-      const finish = await WallFinish.findByIdAndUpdate(id, { ...input, textureUrl }, { new: true })
-      const obj = finish.toObject({ virtuals: true })
-      if (obj.textureUrl && isS3Key(obj.textureUrl)) obj.textureUrl = await generatePresignedGetUrl(obj.textureUrl)
-      return obj
+      checkScope(input.scope)
+      return serializeFinish(await WallFinish.findByIdAndUpdate(id, { ...input, textureUrl }, { new: true }))
     },
     deleteWallFinish: async (_, { id }, context) => {
       requireAdmin(context)
@@ -473,21 +539,17 @@ const adminResolvers = {
       requireAdmin(context)
       const glbUrl = input.glbUrl ? extractS3Key(input.glbUrl) : ''
       const thumbnailUrl = input.thumbnailUrl ? extractS3Key(input.thumbnailUrl) : ''
-      const design = await FurnitureDesign.create({ ...input, glbUrl, thumbnailUrl })
-      const obj = design.toObject({ virtuals: true })
-      if (obj.glbUrl && isS3Key(obj.glbUrl)) obj.glbUrl = await generatePresignedGetUrl(obj.glbUrl)
-      if (obj.thumbnailUrl && isS3Key(obj.thumbnailUrl)) obj.thumbnailUrl = await generatePresignedGetUrl(obj.thumbnailUrl)
-      return obj
+      checkScope(input.scope)
+      if (input.mount != null && !['wall', 'floor'].includes(input.mount)) throw new Error('Tipo de mueble no válido')
+      return serializeDesign(await FurnitureDesign.create({ ...input, glbUrl, thumbnailUrl }))
     },
     updateFurnitureDesign: async (_, { id, input }, context) => {
       requireAdmin(context)
       const glbUrl = input.glbUrl ? extractS3Key(input.glbUrl) : ''
       const thumbnailUrl = input.thumbnailUrl ? extractS3Key(input.thumbnailUrl) : ''
-      const design = await FurnitureDesign.findByIdAndUpdate(id, { ...input, glbUrl, thumbnailUrl }, { new: true })
-      const obj = design.toObject({ virtuals: true })
-      if (obj.glbUrl && isS3Key(obj.glbUrl)) obj.glbUrl = await generatePresignedGetUrl(obj.glbUrl)
-      if (obj.thumbnailUrl && isS3Key(obj.thumbnailUrl)) obj.thumbnailUrl = await generatePresignedGetUrl(obj.thumbnailUrl)
-      return obj
+      checkScope(input.scope)
+      if (input.mount != null && !['wall', 'floor'].includes(input.mount)) throw new Error('Tipo de mueble no válido')
+      return serializeDesign(await FurnitureDesign.findByIdAndUpdate(id, { ...input, glbUrl, thumbnailUrl }, { new: true }))
     },
     deleteFurnitureDesign: async (_, { id }, context) => {
       requireAdmin(context)

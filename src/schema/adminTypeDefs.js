@@ -70,12 +70,39 @@ const adminTypeDefs = gql`
     snapshotImageUrl: String!
     adminNotes: String!
     itemsDescription: String!
+    wallSnapshots: [MuebleWallSnapshot!]!
     confirmedAt: String!
+  }
+
+  input AmbientInput {
+    key: String!
+    name: String!
+    outdoor: Boolean
+    defaultHeightCm: Float
+    defaultWallFinishKey: String
+    defaultFloorFinishKey: String
+    illustrationUrl: String
+    available: Boolean
+    order: Int
+  }
+
+  input FloorFinishInput {
+    key: String!
+    name: String!
+    kind: String!
+    colorHex: String
+    textureUrl: String
+    scope: String
+    available: Boolean
+    order: Int
   }
 
   input WallTypeInput {
     key: String!
     name: String!
+    shape: String
+    defaultLengthsCm: [Float!]
+    ambients: [String!]
     illustrationUrl: String
     defaultWidthCm: Float!
     defaultHeightCm: Float!
@@ -89,6 +116,7 @@ const adminTypeDefs = gql`
     kind: String!
     colorHex: String
     textureUrl: String
+    scope: String
     available: Boolean
     order: Int
   }
@@ -102,6 +130,8 @@ const adminTypeDefs = gql`
     heightCm: Float!
     depthCm: Float!
     price: Float!
+    mount: String
+    scope: String
     available: Boolean
     order: Int
   }
@@ -115,6 +145,8 @@ const adminTypeDefs = gql`
 
     adminPendingMuebleOrders: [DraftMuebleOrder!]!
     adminConfirmedMuebleOrders: [ConfirmedMuebleOrder!]!
+    adminAmbients: [Ambient!]!
+    adminFloorFinishes: [FloorFinish!]!
     adminWallTypes: [WallType!]!
     adminWallFinishes: [WallFinish!]!
     adminFurnitureDesigns: [FurnitureDesign!]!
@@ -150,6 +182,15 @@ const adminTypeDefs = gql`
 
     confirmMuebleOrder(code: String!, adminNotes: String): ConfirmedMuebleOrder!
     deleteDraftMuebleOrder(code: String!): Boolean!
+
+    createAmbient(input: AmbientInput!): Ambient!
+    updateAmbient(id: ID!, input: AmbientInput!): Ambient!
+    deleteAmbient(id: ID!): Boolean!
+
+    createFloorFinish(input: FloorFinishInput!): FloorFinish!
+    updateFloorFinish(id: ID!, input: FloorFinishInput!): FloorFinish!
+    deleteFloorFinish(id: ID!): Boolean!
+    getFloorFinishTextureUploadUrl(filename: String!, contentType: String!): UploadUrlPayload!
 
     createWallType(input: WallTypeInput!): WallType!
     updateWallType(id: ID!, input: WallTypeInput!): WallType!

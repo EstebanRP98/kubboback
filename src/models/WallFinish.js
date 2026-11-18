@@ -6,6 +6,7 @@ const wallFinishSchema = new mongoose.Schema({
   kind:       { type: String, enum: ['color', 'texture'], required: true },
   colorHex:   { type: String, default: '' },
   textureUrl: { type: String, default: '' },
+  scope:      { type: String, enum: ['interior', 'exterior', 'both'], default: 'both' },
   available:  { type: Boolean, default: true },
   order:      { type: Number, default: 0 },
 }, { timestamps: true })

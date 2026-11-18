@@ -9,6 +9,8 @@ const furnitureDesignSchema = new mongoose.Schema({
   heightCm:     { type: Number, required: true },
   depthCm:      { type: Number, required: true },
   price:        { type: Number, required: true },
+  mount:        { type: String, enum: ['wall', 'floor'], default: 'wall' },            // de pared o de piso
+  scope:        { type: String, enum: ['interior', 'exterior', 'both'], default: 'interior' }, // patio = exterior
   available:    { type: Boolean, default: true },
   order:        { type: Number, default: 0 },
 }, { timestamps: true })
