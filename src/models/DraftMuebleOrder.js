@@ -16,6 +16,8 @@ const placedItemSchema = new mongoose.Schema({
   widthCm:     Number,
   heightCm:    Number,
   depthCm:     Number,
+  // colores elegidos por parte (resueltos en el servidor desde FurnitureDesign.colorParts)
+  colors:      [new mongoose.Schema({ part: String, label: String, name: String, hex: String }, { _id: false })],
 }, { _id: false })
 
 const finishSnapshotSchema = new mongoose.Schema({

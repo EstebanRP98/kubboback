@@ -53,6 +53,25 @@ const muebleTypeDefs = gql`
     order: Int!
   }
 
+  type FurnitureColorOption {
+    name: String!
+    hex: String!
+  }
+
+  # Parte del .glb que el cliente puede pintar; key = nombre del material en el .glb
+  type FurnitureColorPart {
+    key: String!
+    label: String!
+    options: [FurnitureColorOption!]!
+  }
+
+  type MuebleItemColor {
+    part: String!
+    label: String!
+    name: String!
+    hex: String!
+  }
+
   type FurnitureDesign {
     id: ID!
     key: String!
@@ -67,6 +86,7 @@ const muebleTypeDefs = gql`
     scope: String!
     available: Boolean!
     order: Int!
+    colorParts: [FurnitureColorPart!]!
   }
 
   type DraftMuebleOrderItem {
@@ -84,6 +104,7 @@ const muebleTypeDefs = gql`
     widthCm: Float
     heightCm: Float
     depthCm: Float
+    colors: [MuebleItemColor!]!
   }
 
   type DraftMuebleOrderWallType {
@@ -171,6 +192,13 @@ const muebleTypeDefs = gql`
     floorXCm: Float
     floorZCm: Float
     rotationDeg: Float
+    colors: [MuebleItemColorInput!]
+  }
+
+  # El cliente solo manda la parte y el nombre del color; el servidor resuelve el hex del catálogo
+  input MuebleItemColorInput {
+    part: String!
+    name: String!
   }
 
   # Espacio completo (VISION.md Parte 3). El servidor resuelve nombres, colores y medidas de

@@ -62,6 +62,25 @@ function extractS3Key(value) {
   }
 }
 
+// Partes pintables de un mueble (VISION.md Parte 4): key = nombre del material del .glb.
+const HEX_RE = /^#[0-9a-f]{6}$/i
+function cleanColorParts(parts) {
+  const seen = new Set()
+  return parts.map(p => {
+    const key = String(p.key || '').trim()
+    const label = String(p.label || '').trim()
+    const options = (p.options || [])
+      .map(o => ({ name: String(o.name || '').trim(), hex: String(o.hex || '').trim().toLowerCase() }))
+      .filter(o => o.name && HEX_RE.test(o.hex))
+    if (!key || !label) throw new Error('Cada parte de color necesita su nombre')
+    if (seen.has(key)) throw new Error(`La parte "${key}" está repetida`)
+    seen.add(key)
+    if (!options.length) throw new Error(`La parte "${label}" necesita al menos un color`)
+    if (new Set(options.map(o => o.name)).size !== options.length) throw new Error(`Hay colores repetidos en "${label}"`)
+    return { key, label, options }
+  })
+}
+
 const adminResolvers = {
   Query: {
     adminPendingOrders: async (_, __, context) => {
@@ -403,7 +422,10 @@ const adminResolvers = {
       }
 
       const itemsDescription = draft.items
-        .map((item, i) => `${i + 1}. ${item.name} ($${item.price})`)
+        .map((item, i) => {
+          const colors = (item.colors || []).map(c => `${c.label}: ${c.name}`).join(', ')
+          return `${i + 1}. ${item.name}${colors ? ` (${colors})` : ''} ($${item.price})`
+        })
         .join(' · ')
 
       const order = await MuebleOrder.create({
@@ -541,6 +563,7 @@ const adminResolvers = {
       const thumbnailUrl = input.thumbnailUrl ? extractS3Key(input.thumbnailUrl) : ''
       checkScope(input.scope)
       if (input.mount != null && !['wall', 'floor'].includes(input.mount)) throw new Error('Tipo de mueble no válido')
+      if (input.colorParts) input = { ...input, colorParts: cleanColorParts(input.colorParts) }
       return serializeDesign(await FurnitureDesign.create({ ...input, glbUrl, thumbnailUrl }))
     },
     updateFurnitureDesign: async (_, { id, input }, context) => {
@@ -549,6 +572,7 @@ const adminResolvers = {
       const thumbnailUrl = input.thumbnailUrl ? extractS3Key(input.thumbnailUrl) : ''
       checkScope(input.scope)
       if (input.mount != null && !['wall', 'floor'].includes(input.mount)) throw new Error('Tipo de mueble no válido')
+      if (input.colorParts) input = { ...input, colorParts: cleanColorParts(input.colorParts) }
       return serializeDesign(await FurnitureDesign.findByIdAndUpdate(id, { ...input, glbUrl, thumbnailUrl }, { new: true }))
     },
     deleteFurnitureDesign: async (_, { id }, context) => {

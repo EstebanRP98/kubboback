@@ -43,6 +43,7 @@ export async function serializeDesign(doc) {
     thumbnailUrl: await sign(obj.thumbnailUrl),
     mount: obj.mount || 'wall',
     scope: obj.scope || 'interior',
+    colorParts: Array.isArray(obj.colorParts) ? obj.colorParts : [],
   }
 }
 
@@ -78,6 +79,7 @@ export async function serializeDraft(doc) {
     mount: item.mount || 'wall',
     wallIndex: item.wallIndex ?? 0,
     rotationDeg: item.rotationDeg ?? 0,
+    colors: Array.isArray(item.colors) ? item.colors : [],
   })))
   if (obj.wallFinish) obj.wallFinish = await signFinishSnapshot(obj.wallFinish)
   if (obj.space) {

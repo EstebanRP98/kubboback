@@ -134,6 +134,18 @@ const adminTypeDefs = gql`
     scope: String
     available: Boolean
     order: Int
+    colorParts: [FurnitureColorPartInput!]
+  }
+
+  input FurnitureColorOptionInput {
+    name: String!
+    hex: String!
+  }
+
+  input FurnitureColorPartInput {
+    key: String!
+    label: String!
+    options: [FurnitureColorOptionInput!]!
   }
 
   extend type Query {

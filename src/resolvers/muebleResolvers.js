@@ -58,6 +58,20 @@ const finishSnapshot = (f) => ({
   key: f.key, name: f.name, kind: f.kind, colorHex: f.colorHex || '', textureUrl: f.textureUrl || '',
 })
 
+/**
+ * Colores de un mueble: por cada parte pintable del diseño toma la opción que pidió el cliente
+ * (por nombre) o, si no existe, la de fábrica (la primera). Lo que no está en el catálogo se ignora.
+ */
+export function resolveItemColors(design, requested) {
+  const wanted = new Map((requested || []).map(c => [c.part, c.name]))
+  return (design.colorParts || [])
+    .filter(p => p.options?.length)
+    .map(p => {
+      const opt = p.options.find(o => o.name === wanted.get(p.key)) || p.options[0]
+      return { part: p.key, label: p.label, name: opt.name, hex: opt.hex }
+    })
+}
+
 const NOT_AVAILABLE = 'Algo de tu diseño ya no está disponible. Recarga la página e intenta de nuevo.'
 
 /** Resuelve y valida el espacio completo contra el catálogo (VISION.md Parte 3, §30). */
@@ -212,6 +226,7 @@ const muebleResolvers = {
           widthCm:   design.widthCm,
           heightCm:  design.heightCm,
           depthCm:   design.depthCm,
+          colors:    resolveItemColors(design, item.colors),
         }
         if (mount === 'floor') {
           return { ...base, wallIndex: 0, xCm: 0, yCm: 0, floorXCm: item.floorXCm, floorZCm: item.floorZCm }
